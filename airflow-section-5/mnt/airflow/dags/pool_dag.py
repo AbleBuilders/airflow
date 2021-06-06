@@ -16,6 +16,8 @@ with DAG(dag_id='pool_dag', schedule_interval='0 0 * * *', default_args=default_
     get_forex_rate_EUR = SimpleHttpOperator(
         task_id='get_forex_rate_EUR',
         method='GET',
+        priority_weight=3,
+        pool='forex_api_pool',
         http_conn_id='forex_api',
         endpoint='/latest?base=EUR',
         xcom_push=True
@@ -26,6 +28,8 @@ with DAG(dag_id='pool_dag', schedule_interval='0 0 * * *', default_args=default_
         task_id='get_forex_rate_USD',
         method='GET',
         http_conn_id='forex_api',
+        priority_weight=2,
+        pool='forex_api_pool',
         endpoint='/latest?base=USD',
         xcom_push=True
     )
@@ -35,6 +39,8 @@ with DAG(dag_id='pool_dag', schedule_interval='0 0 * * *', default_args=default_
         task_id='get_forex_rate_JPY',
         method='GET',
         http_conn_id='forex_api',
+        priority_weight=1,
+        pool='forex_api_pool',
         endpoint='/latest?base=JPY',
         xcom_push=True
     )
